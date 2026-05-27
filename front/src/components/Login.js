@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
 
 function Login() {
   let navigator = useNavigate();
@@ -35,27 +34,32 @@ function Login() {
           fullWidth 
           style={{ marginTop: '20px' }} 
           onClick={()=>{
-            console.log(idRef.current.value);
             let info = {
               userId : idRef.current.value,
               pwd : pwdRef.current.value
             };
-              fetch("http://localhost:3010/user/login", {
-                method : "POST",
-                headers : {
-                  "Content-type" : "application/json"
-                },
-                body :JSON.stringify(info)  
+            fetch("http://localhost:3010/user/login", {
+              method : "POST",
+              headers : {
+                "Content-type" : "application/json"
+              },
+              body : JSON.stringify(info)
             })
               .then(res => res.json())
-              .then(data =>{
+              .then(data => {
                 alert(data.message);
-                navigator("/feed");
+                if(data.result){
+                  navigator("/feed");
+                  // console.log(data.token)
+                  localStorage.setItem("token", data.token)
+                }
+                
+                
               })
-              .catch(err=>{
+              .catch(err => {
                 alert("서버 에러 발생!")
               });
-          }}>
+        }}>
           로그인
         </Button>
         <Typography variant="body2" style={{ marginTop: '10px' }}>
