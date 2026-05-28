@@ -1,9 +1,10 @@
 const oracledb = require('oracledb');
+require("dotenv").config();
 
 const dbConfig = {
-    user: 'system',
-    password: 'test1234',
-    connectString: 'localhost/xe',
+    user: process.env.db_user,
+    password: process.env.db_password,
+    connectString: process.env.db_address,
     poolMin: 1,
     poolMax: 100,
     poolIncrement: 1

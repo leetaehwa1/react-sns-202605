@@ -4,7 +4,8 @@ const db = require("../db");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const JWT_KEY = "secret_key";
+require("dotenv").config();
+const JWT_KEY = process.env.jwt_key;
 const jwtAuthentication = require('../auth');
 
 // .env 로 관리(java의 프로퍼티 같은 개념)
@@ -73,6 +74,7 @@ router.post('/login', async (req, res) => {
           role : result.rows[0].ROLE
         };
         token = jwt.sign(payload, JWT_KEY, {expiresIn : '1h'});
+        console.log(JWT_KEY);
         console.log(token);
       } else{
         message = "비밀번호가 틀립니다."
